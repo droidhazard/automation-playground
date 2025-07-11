@@ -1,68 +1,70 @@
-{
-  "id": "hubspot",
-  "name": "HubSpot",
-  "icon": "https://zapier-images.imgix.net/storage/developer/cde9764aa8d19fdd6d591455dbe5a78d.png?auto=format&fit=crop&ixlib=react-9.10.0&q=50&w=60&h=60&dpr=1",
-  "triggers": [
-    {
-      "id": "new_contact",
-      "name": "New Contact Created",
-      "description": "Triggers when a new contact is added to HubSpot.",
-      "sampleOutput": {
-        "id": "12345",
-        "email": "jane@example.com",
-        "firstName": "Jane",
-        "lastName": "Doe",
-        "createdAt": "2023-07-01T10:00:00Z"
-      },
-      "outputFields": [
-        { "key": "id", "label": "Contact ID", "type": "string" },
-        { "key": "email", "label": "Email", "type": "email" },
-        { "key": "firstName", "label": "First Name", "type": "string" },
-        { "key": "lastName", "label": "Last Name", "type": "string" },
-        { "key": "createdAt", "label": "Created At", "type": "datetime" }
-      ]
-    }
-  ],
-  "actions": [
-    {
-      "id": "create_deal",
-      "name": "Create Deal",
-      "description": "Creates a new deal in HubSpot.",
-      "inputFields": [
-        {
-          "key": "dealName",
-          "label": "Deal Name",
-          "type": "string",
-          "required": true
+[
+  {
+    "id": "hubspot",
+    "name": "HubSpot",
+    "icon": "https://zapier-images.imgix.net/storage/developer/cde9764aa8d19fdd6d591455dbe5a78d.png?auto=format&fit=crop&ixlib=react-9.10.0&q=50&w=60&h=60&dpr=1",
+    "triggers": [
+      {
+        "id": "new_contact",
+        "name": "New Contact Created",
+        "description": "Triggers when a new contact is added to HubSpot.",
+        "sampleOutput": {
+          "id": "12345",
+          "email": "jane@example.com",
+          "firstName": "Jane",
+          "lastName": "Doe",
+          "createdAt": "2023-07-01T10:00:00Z"
         },
-        {
-          "key": "amount",
-          "label": "Amount",
-          "type": "number",
-          "required": false
+        "outputFields": [
+          { "key": "id", "label": "Contact ID", "type": "string" },
+          { "key": "email", "label": "Email", "type": "email" },
+          { "key": "firstName", "label": "First Name", "type": "string" },
+          { "key": "lastName", "label": "Last Name", "type": "string" },
+          { "key": "createdAt", "label": "Created At", "type": "datetime" }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "create_deal",
+        "name": "Create Deal",
+        "description": "Creates a new deal in HubSpot.",
+        "inputFields": [
+          {
+            "key": "dealName",
+            "label": "Deal Name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "key": "amount",
+            "label": "Amount",
+            "type": "number",
+            "required": false
+          },
+          {
+            "key": "pipeline",
+            "label": "Pipeline ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "sampleInput": {
+          "dealName": "New Website Project",
+          "amount": 3000,
+          "pipeline": "default"
         },
-        {
-          "key": "pipeline",
-          "label": "Pipeline ID",
-          "type": "string",
-          "required": true
-        }
-      ],
-      "sampleInput": {
-        "dealName": "New Website Project",
-        "amount": 3000,
-        "pipeline": "default"
-      },
-      "sampleOutput": {
-        "id": "98765",
-        "status": "created",
-        "dealName": "New Website Project"
-      },
-      "outputFields": [
-        { "key": "id", "label": "Deal ID", "type": "string" },
-        { "key": "status", "label": "Status", "type": "string" },
-        { "key": "dealName", "label": "Deal Name", "type": "string" }
-      ]
-    }
-  ]
-}
+        "sampleOutput": {
+          "id": "98765",
+          "status": "created",
+          "dealName": "New Website Project"
+        },
+        "outputFields": [
+          { "key": "id", "label": "Deal ID", "type": "string" },
+          { "key": "status", "label": "Status", "type": "string" },
+          { "key": "dealName", "label": "Deal Name", "type": "string" }
+        ]
+      }
+    ]
+  }
+]
