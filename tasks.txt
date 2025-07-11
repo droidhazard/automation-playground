@@ -1,0 +1,9 @@
+- Set trigger to be undeletable
+- Apps Data shifting on Deleting
+- Step Name Changing and Manual Rename
+- Step Icon Setup and Changing
+- Ability to Drag steps and Change Order
+- Background scrolling
+- Zooming Canvas In and Out
+- Test Step Data
+- Ability to Map Fields
