@@ -1,5 +1,7 @@
 - Set trigger to be undeletable
 - Apps Data shifting on Deleting
+- Should not be able to delete trigger
+- Save data in localstorage
 - Step Name Changing and Manual Rename
 - Step Icon Setup and Changing
 - Ability to Drag steps and Change Order
