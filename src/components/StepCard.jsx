@@ -10,18 +10,32 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import StepTabs from "./StepTabs";
-import apps from "../database"; // path to your apps JSON file
+import apps from "../database.json";
 
 const StepCard = ({ stepNumber, onDelete }) => {
   const [expanded, setExpanded] = useState(true);
   const [selectedApp, setSelectedApp] = useState(null);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+
+  const isFirstStep = stepNumber === 1;
 
   const toggleExpanded = () => setExpanded(!expanded);
 
   const handleAppChange = (appId) => {
     const foundApp = apps.find((app) => app.id === appId);
     setSelectedApp(foundApp);
+    setSelectedEventId(null);
   };
+
+  const handleEventChange = (eventId) => {
+    setSelectedEventId(eventId);
+  };
+
+  const availableEvents = selectedApp
+    ? isFirstStep
+      ? selectedApp.triggers
+      : selectedApp.actions
+    : [];
 
   return (
     <Card className="w-full max-w-2xl shadow mb-4">
@@ -66,6 +80,27 @@ const StepCard = ({ stepNumber, onDelete }) => {
 
       {expanded && (
         <CardContent className="space-y-4">
+          {selectedApp && (
+            <div>
+              <Select onValueChange={handleEventChange}>
+                <SelectTrigger className="w-full">
+                  <SelectValue
+                    placeholder={`Select ${
+                      isFirstStep ? "Trigger" : "Action"
+                    } Event`}
+                  />
+                </SelectTrigger>
+                <SelectContent>
+                  {availableEvents.map((event) => (
+                    <SelectItem key={event.id} value={event.id}>
+                      {event.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
           <StepTabs />
           <Button
             variant="outline"
