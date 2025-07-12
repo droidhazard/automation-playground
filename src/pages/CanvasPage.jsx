@@ -15,6 +15,8 @@ const CanvasPage = () => {
       id: uuidv4(),
       selectedAppId: null,
       selectedEventId: null,
+      fieldInputs: {},
+      name: "", // required now
     };
     setSteps((prev) => [...prev, newStep]);
   };

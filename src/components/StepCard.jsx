@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Pencil, Trash2 } from "lucide-react";
 import {
   Select,
   SelectTrigger,
@@ -11,11 +11,12 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
-import appsDB from "../lib/database.json"; // your local JSON knowledge base
+import appsDB from "../lib/database.json";
 
 const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
   const [expanded, setExpanded] = useState(true);
   const [selectedTab, setSelectedTab] = useState("input");
+  const [editingName, setEditingName] = useState(false);
 
   const toggleExpanded = () => setExpanded(!expanded);
 
@@ -24,14 +25,25 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
       ...step,
       selectedAppId: appId,
       selectedEventId: null,
+      name: "", // Reset name
       fieldInputs: {},
     });
   };
 
   const handleEventSelect = (eventId) => {
+    const selectedApp = appsDB.find((app) => app.id === step.selectedAppId);
+    const events = isFirstStep ? selectedApp?.triggers : selectedApp?.actions;
+    const selectedEvent = events?.find((e) => e.id === eventId);
+
+    const autoName =
+      selectedEvent && selectedApp
+        ? `${selectedEvent.name} in ${selectedApp.name}`
+        : "";
+
     onUpdate({
       ...step,
       selectedEventId: eventId,
+      name: autoName,
     });
   };
 
@@ -45,6 +57,13 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
     });
   };
 
+  const handleNameChange = (e) => {
+    onUpdate({
+      ...step,
+      name: e.target.value,
+    });
+  };
+
   const selectedApp = appsDB.find((app) => app.id === step.selectedAppId);
   const events = selectedApp
     ? isFirstStep
@@ -53,7 +72,6 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
     : [];
 
   const selectedEvent = events?.find((e) => e.id === step.selectedEventId);
-
   const fields = isFirstStep
     ? selectedEvent?.outputFields || []
     : selectedEvent?.inputFields || [];
@@ -61,19 +79,39 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
   return (
     <Card className="w-full max-w-2xl shadow mb-4">
       <CardHeader
-        className="flex flex-row items-center justify-between cursor-pointer"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between cursor-pointer"
         onClick={toggleExpanded}
       >
-        <CardTitle className="text-lg font-semibold flex items-center gap-2">
+        <div className="flex items-center gap-2 w-full">
           {expanded ? (
             <ChevronDown className="w-5 h-5" />
           ) : (
             <ChevronRight className="w-5 h-5" />
           )}
-          Step
-        </CardTitle>
+          {editingName ? (
+            <Input
+              value={step.name || ""}
+              onChange={handleNameChange}
+              onBlur={() => setEditingName(false)}
+              autoFocus
+              className="max-w-xs"
+              onClick={(e) => e.stopPropagation()}
+            />
+          ) : (
+            <CardTitle
+              className="text-lg font-semibold flex items-center gap-2"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {step.name || "Step"}
+              <Pencil
+                className="w-4 h-4 text-muted-foreground cursor-pointer"
+                onClick={() => setEditingName(true)}
+              />
+            </CardTitle>
+          )}
+        </div>
 
-        <div className="flex gap-3 items-center">
+        <div className="flex gap-3 items-center mt-3 sm:mt-0">
           <Select
             value={step.selectedAppId || undefined}
             onValueChange={handleAppSelect}

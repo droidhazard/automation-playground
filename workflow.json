@@ -6,12 +6,12 @@
     "fieldInputs": {}
   },
   {
-    "id": "8403a704-7fec-461e-954c-79d302e32314",
+    "id": "e536328d-2ae9-41e5-ba99-193e9d99cef9",
     "selectedAppId": "hubspot",
     "selectedEventId": "create_deal",
     "fieldInputs": {
-      "dealName": "55555555555555555555555555555555555",
-      "amount": "555555555555555555555555555"
-    }
+      "dealName": "123"
+    },
+    "name": "Create Deal in HubSpot 🥹"
   }
 ]
