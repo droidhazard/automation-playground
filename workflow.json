@@ -1,0 +1,17 @@
+[
+  {
+    "id": "5af46cd6-0bdd-47da-b974-d2030e767756",
+    "selectedAppId": "hubspot",
+    "selectedEventId": "new_contact",
+    "fieldInputs": {}
+  },
+  {
+    "id": "8403a704-7fec-461e-954c-79d302e32314",
+    "selectedAppId": "hubspot",
+    "selectedEventId": "create_deal",
+    "fieldInputs": {
+      "dealName": "55555555555555555555555555555555555",
+      "amount": "555555555555555555555555555"
+    }
+  }
+]

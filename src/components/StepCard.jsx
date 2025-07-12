@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, X } from "lucide-react";
+import { ChevronDown, ChevronRight, Trash2 } from "lucide-react";
 import {
   Select,
   SelectTrigger,
@@ -9,33 +9,54 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
-import StepTabs from "./StepTabs";
-import apps from "../database.json";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import appsDB from "../lib/database.json"; // your local JSON knowledge base
 
-const StepCard = ({ stepNumber, onDelete }) => {
+const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
   const [expanded, setExpanded] = useState(true);
-  const [selectedApp, setSelectedApp] = useState(null);
-  const [selectedEventId, setSelectedEventId] = useState(null);
-
-  const isFirstStep = stepNumber === 1;
+  const [selectedTab, setSelectedTab] = useState("input");
 
   const toggleExpanded = () => setExpanded(!expanded);
 
-  const handleAppChange = (appId) => {
-    const foundApp = apps.find((app) => app.id === appId);
-    setSelectedApp(foundApp);
-    setSelectedEventId(null);
+  const handleAppSelect = (appId) => {
+    onUpdate({
+      ...step,
+      selectedAppId: appId,
+      selectedEventId: null,
+      fieldInputs: {},
+    });
   };
 
-  const handleEventChange = (eventId) => {
-    setSelectedEventId(eventId);
+  const handleEventSelect = (eventId) => {
+    onUpdate({
+      ...step,
+      selectedEventId: eventId,
+    });
   };
 
-  const availableEvents = selectedApp
+  const handleFieldChange = (key, value) => {
+    onUpdate({
+      ...step,
+      fieldInputs: {
+        ...step.fieldInputs,
+        [key]: value,
+      },
+    });
+  };
+
+  const selectedApp = appsDB.find((app) => app.id === step.selectedAppId);
+  const events = selectedApp
     ? isFirstStep
       ? selectedApp.triggers
       : selectedApp.actions
     : [];
+
+  const selectedEvent = events?.find((e) => e.id === step.selectedEventId);
+
+  const fields = isFirstStep
+    ? selectedEvent?.outputFields || []
+    : selectedEvent?.inputFields || [];
 
   return (
     <Card className="w-full max-w-2xl shadow mb-4">
@@ -48,64 +69,96 @@ const StepCard = ({ stepNumber, onDelete }) => {
             <ChevronDown className="w-5 h-5" />
           ) : (
             <ChevronRight className="w-5 h-5" />
-          )}{" "}
-          Step {stepNumber}
+          )}
+          Step
         </CardTitle>
-        <div
-          className="flex items-center gap-2"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Select onValueChange={handleAppChange}>
+
+        <div className="flex gap-3 items-center">
+          <Select
+            value={step.selectedAppId || undefined}
+            onValueChange={handleAppSelect}
+          >
             <SelectTrigger className="w-48">
               <SelectValue placeholder="Select App" />
             </SelectTrigger>
             <SelectContent>
-              {apps.map((app) => (
+              {appsDB.map((app) => (
                 <SelectItem key={app.id} value={app.id}>
                   {app.name}
                 </SelectItem>
               ))}
             </SelectContent>
           </Select>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-gray-400 hover:text-red-500"
-            onClick={onDelete}
-          >
-            <X className="w-4 h-4" />
-          </Button>
+
+          {!isFirstStep && (
+            <Button variant="ghost" size="icon" onClick={onDelete}>
+              <Trash2 className="w-4 h-4 text-red-500" />
+            </Button>
+          )}
         </div>
       </CardHeader>
 
       {expanded && (
         <CardContent className="space-y-4">
           {selectedApp && (
-            <div>
-              <Select onValueChange={handleEventChange}>
-                <SelectTrigger className="w-full">
-                  <SelectValue
-                    placeholder={`Select ${
-                      isFirstStep ? "Trigger" : "Action"
-                    } Event`}
-                  />
-                </SelectTrigger>
-                <SelectContent>
-                  {availableEvents.map((event) => (
-                    <SelectItem key={event.id} value={event.id}>
-                      {event.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Select
+              value={step.selectedEventId || undefined}
+              onValueChange={handleEventSelect}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={`Select ${isFirstStep ? "Trigger" : "Action"}`}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {events.map((e) => (
+                  <SelectItem key={e.id} value={e.id}>
+                    {e.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           )}
 
-          <StepTabs />
-          <Button
-            variant="outline"
-            className="w-full bg-white text-black border-gray-300"
-          >
+          {selectedEvent && (
+            <Tabs
+              value={selectedTab}
+              onValueChange={setSelectedTab}
+              className="w-full"
+            >
+              <TabsList className="grid grid-cols-2 w-full mb-2">
+                <TabsTrigger value="input">Input Fields</TabsTrigger>
+                <TabsTrigger value="output">Test Output</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="input">
+                <div className="space-y-3">
+                  {fields.map((field) => (
+                    <div key={field.key}>
+                      <label className="block text-sm font-medium">
+                        {field.label}
+                      </label>
+                      <Input
+                        placeholder={`Enter ${field.label}`}
+                        value={step.fieldInputs?.[field.key] || ""}
+                        onChange={(e) =>
+                          handleFieldChange(field.key, e.target.value)
+                        }
+                      />
+                    </div>
+                  ))}
+                </div>
+              </TabsContent>
+
+              <TabsContent value="output">
+                <div className="text-sm text-gray-600 bg-gray-100 p-4 rounded">
+                  {JSON.stringify(selectedEvent.sampleOutput || {}, null, 2)}
+                </div>
+              </TabsContent>
+            </Tabs>
+          )}
+
+          <Button variant="outline" className="w-full">
             Run Test
           </Button>
         </CardContent>

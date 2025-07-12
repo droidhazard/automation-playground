@@ -1,38 +1,77 @@
+// src/pages/CanvasPage.jsx
 import React, { useState } from "react";
 import StepCard from "@/components/StepCard";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { v4 as uuidv4 } from "uuid";
+import axios from "axios";
+
+const API_URL = "http://localhost:5001/api/workflow";
 
 const CanvasPage = () => {
-  const [steps, setSteps] = useState([1]);
+  const [steps, setSteps] = useState([]);
 
   const addStep = () => {
-    setSteps((prev) => [...prev, prev.length + 1]);
+    const newStep = {
+      id: uuidv4(),
+      selectedAppId: null,
+      selectedEventId: null,
+    };
+    setSteps((prev) => [...prev, newStep]);
   };
 
-  const handleDeleteStep = (indexToDelete) => {
-    setSteps((prev) => prev.filter((_, i) => i !== indexToDelete));
+  const deleteStep = (stepId) => {
+    setSteps((prev) => prev.filter((step) => step.id !== stepId));
+  };
+
+  const handleUpdateStep = (updatedStep) => {
+    setSteps((prev) =>
+      prev.map((step) => (step.id === updatedStep.id ? updatedStep : step))
+    );
+  };
+
+  const handleLoad = async () => {
+    try {
+      const res = await axios.get(API_URL);
+      setSteps(res.data);
+    } catch (err) {
+      console.error("Error loading workflow:", err);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      await axios.post(API_URL, steps);
+      alert("Workflow saved to file ✅");
+    } catch (err) {
+      console.error("Error saving workflow:", err);
+      alert("Failed to save workflow ❌");
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start p-6">
-      <h1 className="text-2xl font-bold mb-6">⚙️ Automation Canvas</h1>
-
+    <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
       {steps.map((step, index) => (
         <StepCard
-          key={index}
-          stepNumber={index + 1}
-          onDelete={() => handleDeleteStep(index)}
+          key={step.id}
+          step={step}
+          isFirstStep={index === 0}
+          onDelete={() => deleteStep(step.id)}
+          onUpdate={handleUpdateStep}
         />
       ))}
 
-      <Button
-        variant="outline"
-        className="flex items-center gap-2 mt-4 bg-white text-black border-gray-300"
-        onClick={addStep}
-      >
-        <Plus className="w-4 h-4" /> Add Step
+      <Button onClick={addStep} className="mt-4 mb-8">
+        + Add Step
       </Button>
+
+      <div className="fixed bottom-6 right-6 flex gap-3">
+        <Button onClick={handleLoad} variant="outline">
+          ⬇ Load Workflow
+        </Button>
+        <Button onClick={handleSave} variant="default">
+          💾 Save Workflow
+        </Button>
+      </div>
     </div>
   );
 };
