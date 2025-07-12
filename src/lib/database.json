@@ -66,5 +66,73 @@
         ]
       }
     ]
+  },
+  {
+    "id": "pipedrive",
+    "name": "Pipedrive",
+    "icon": "https://zapier-images.imgix.net/storage/services/d657ba4f3441a30ced367a4aa7cacacb.png?auto=format&fit=crop&ixlib=react-9.10.0&q=50&w=60&h=60&dpr=1",
+    "triggers": [
+      {
+        "id": "new_deal",
+        "name": "New Deal Created",
+        "description": "Triggers when a new deal is created in Pipedrive.",
+        "sampleOutput": {
+          "id": "101",
+          "title": "Website Redesign",
+          "value": 5000,
+          "stage": "Proposal",
+          "createdAt": "2023-08-15T09:30:00Z"
+        },
+        "outputFields": [
+          { "key": "id", "label": "Deal ID", "type": "string" },
+          { "key": "title", "label": "Deal Title", "type": "string" },
+          { "key": "value", "label": "Deal Value", "type": "number" },
+          { "key": "stage", "label": "Stage", "type": "string" },
+          { "key": "createdAt", "label": "Created At", "type": "datetime" }
+        ]
+      }
+    ],
+    "actions": [
+      {
+        "id": "add_person",
+        "name": "Create Person",
+        "description": "Creates a new person (contact) in Pipedrive.",
+        "inputFields": [
+          {
+            "key": "name",
+            "label": "Full Name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "key": "email",
+            "label": "Email Address",
+            "type": "email",
+            "required": false
+          },
+          {
+            "key": "phone",
+            "label": "Phone Number",
+            "type": "string",
+            "required": false
+          }
+        ],
+        "sampleInput": {
+          "name": "John Smith",
+          "email": "john@example.com",
+          "phone": "+123456789"
+        },
+        "sampleOutput": {
+          "id": "202",
+          "name": "John Smith",
+          "email": "john@example.com"
+        },
+        "outputFields": [
+          { "key": "id", "label": "Person ID", "type": "string" },
+          { "key": "name", "label": "Name", "type": "string" },
+          { "key": "email", "label": "Email", "type": "email" }
+        ]
+      }
+    ]
   }
 ]

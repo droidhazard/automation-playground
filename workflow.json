@@ -13,5 +13,16 @@
       "dealName": "123"
     },
     "name": "Create Deal in HubSpot 🥹"
+  },
+  {
+    "id": "77b33e0b-2c45-4592-889b-2869d3434dcb",
+    "selectedAppId": "pipedrive",
+    "selectedEventId": "add_person",
+    "fieldInputs": {
+      "name": "Droid GameZZ",
+      "email": "droidgamezzo@gmail.com",
+      "phone": "03123364853"
+    },
+    "name": "Create Person in Pipedrive"
   }
 ]

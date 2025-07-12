@@ -65,6 +65,7 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
   };
 
   const selectedApp = appsDB.find((app) => app.id === step.selectedAppId);
+
   const events = selectedApp
     ? isFirstStep
       ? selectedApp.triggers
@@ -102,6 +103,13 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
               className="text-lg font-semibold flex items-center gap-2"
               onClick={(e) => e.stopPropagation()}
             >
+              {selectedApp?.icon && (
+                <img
+                  src={selectedApp.icon}
+                  alt={`${selectedApp.name} icon`}
+                  className="w-5 h-5 rounded-sm"
+                />
+              )}
               {step.name || "Step"}
               <Pencil
                 className="w-4 h-4 text-muted-foreground cursor-pointer"
