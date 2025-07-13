@@ -4,8 +4,9 @@ DONE - Should not be able to delete trigger
 DONE - Save data in local json file
 DONE - Step Name Changing and Manual Rename
 DONE - Step Icon Setup and Changing
-- Ability to Drag steps and Change Order
-- Background scrolling
-- Zooming Canvas In and Out
+DONE - Ability to Drag steps and Change Order
+NO - Background scrolling
+DONE - Zooming Canvas In and Out
 - Test Step Data
 - Ability to Map Fields
+- Add Paths
