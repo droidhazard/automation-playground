@@ -111,6 +111,7 @@ const CanvasPage = () => {
                   isFirstStep={index === 0}
                   onDelete={() => deleteStep(step.id)}
                   onUpdate={handleUpdateStep}
+                  previousSteps={steps.slice(0, index)} // Pass earlier steps only
                 />
               </SortableStepWrapper>
             ))}

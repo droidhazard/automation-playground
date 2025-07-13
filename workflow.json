@@ -1,27 +1,60 @@
 [
   {
     "id": "5af46cd6-0bdd-47da-b974-d2030e767756",
-    "selectedAppId": "hubspot",
-    "selectedEventId": "new_contact",
-    "fieldInputs": {}
+    "selectedAppId": "pipedrive",
+    "selectedEventId": "new_deal",
+    "fieldInputs": {},
+    "name": "New Deal Created in Pipedrive",
+    "testOutput": {
+      "id": "101",
+      "title": "Website Redesign",
+      "value": 5000,
+      "stage": "Proposal",
+      "createdAt": "2023-08-15T09:30:00Z"
+    }
   },
   {
     "id": "e536328d-2ae9-41e5-ba99-193e9d99cef9",
     "selectedAppId": "hubspot",
     "selectedEventId": "create_deal",
     "fieldInputs": {
-      "dealName": "123"
+      "dealName": {
+        "sourceStepId": "5af46cd6-0bdd-47da-b974-d2030e767756",
+        "fieldKey": "title"
+      },
+      "amount": {
+        "sourceStepId": "5af46cd6-0bdd-47da-b974-d2030e767756",
+        "fieldKey": "title"
+      },
+      "pipeline": {
+        "sourceStepId": "5af46cd6-0bdd-47da-b974-d2030e767756",
+        "fieldKey": "stage"
+      }
     },
-    "name": "Create Deal in HubSpot 🥹"
+    "name": "Create Deal in HubSpot 🥹",
+    "testOutput": {
+      "id": "98765",
+      "status": "created",
+      "dealName": "New Website Project"
+    }
   },
   {
     "id": "77b33e0b-2c45-4592-889b-2869d3434dcb",
     "selectedAppId": "pipedrive",
     "selectedEventId": "add_person",
     "fieldInputs": {
-      "name": "Droid GameZZ",
-      "email": "droidgamezzo@gmail.com",
-      "phone": "03123364853"
+      "name": {
+        "sourceStepId": "e536328d-2ae9-41e5-ba99-193e9d99cef9",
+        "fieldKey": "status"
+      },
+      "email": {
+        "sourceStepId": "5af46cd6-0bdd-47da-b974-d2030e767756",
+        "fieldKey": "title"
+      },
+      "phone": {
+        "sourceStepId": "e536328d-2ae9-41e5-ba99-193e9d99cef9",
+        "fieldKey": "status"
+      }
     },
     "name": "Create Person in Pipedrive"
   }

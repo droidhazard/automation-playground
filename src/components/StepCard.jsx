@@ -13,7 +13,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import appsDB from "../lib/database.json";
 
-const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
+const StepCard = ({ step, isFirstStep, onDelete, onUpdate, previousSteps }) => {
   const [expanded, setExpanded] = useState(false);
   const [selectedTab, setSelectedTab] = useState("input");
   const [editingName, setEditingName] = useState(false);
@@ -179,20 +179,112 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
 
               <TabsContent value="input">
                 <div className="space-y-3">
-                  {fields.map((field) => (
-                    <div key={field.key}>
-                      <label className="block text-sm font-medium">
-                        {field.label}
-                      </label>
-                      <Input
-                        placeholder={`Enter ${field.label}`}
-                        value={step.fieldInputs?.[field.key] || ""}
-                        onChange={(e) =>
-                          handleFieldChange(field.key, e.target.value)
-                        }
-                      />
-                    </div>
-                  ))}
+                  {fields.map((field) => {
+                    const valueObj = step.fieldInputs?.[field.key];
+                    const isMapped = valueObj && typeof valueObj === "object";
+
+                    let sourceStep = null;
+                    let stepIndex = null;
+                    let appIcon = null;
+                    let fieldValue = "";
+                    let fieldLabel = "";
+
+                    if (isMapped) {
+                      sourceStep = previousSteps.find(
+                        (s) => s.id === valueObj.sourceStepId
+                      );
+                      stepIndex = previousSteps.findIndex(
+                        (s) => s.id === valueObj.sourceStepId
+                      );
+                      appIcon = appsDB.find(
+                        (app) => app.id === sourceStep?.selectedAppId
+                      )?.icon;
+                      fieldValue =
+                        sourceStep?.testOutput?.[valueObj.fieldKey] || "";
+                      fieldLabel =
+                        sourceStep?.outputFields?.find(
+                          (f) => f.key === valueObj.fieldKey
+                        )?.label || valueObj.fieldKey;
+                    }
+
+                    return (
+                      <div key={field.key} className="relative">
+                        <label className="block text-sm font-medium mb-1">
+                          {field.label}
+                        </label>
+
+                        <div className="flex items-center gap-2 relative">
+                          {/* Render read-only styled view if mapped */}
+                          {isMapped ? (
+                            <div className="flex items-center bg-white border border-input rounded px-3 py-2 w-full text-sm shadow-sm">
+                              {appIcon && (
+                                <img
+                                  src={appIcon}
+                                  alt="icon"
+                                  className="w-5 h-5 mr-2"
+                                />
+                              )}
+                              <span className="mr-2 text-gray-500">
+                                ({stepIndex + 1})
+                              </span>
+                              <span className="font-semibold mr-1">
+                                {fieldLabel}:
+                              </span>
+                              <span>{fieldValue}</span>
+                            </div>
+                          ) : (
+                            <Input
+                              value={step.fieldInputs?.[field.key] || ""}
+                              placeholder={`Enter ${field.label}`}
+                              onChange={(e) =>
+                                handleFieldChange(field.key, e.target.value)
+                              }
+                            />
+                          )}
+
+                          {/* Mapping Dropdown */}
+                          {previousSteps?.length > 0 && (
+                            <Select
+                              onValueChange={(val) => {
+                                const [stepId, fieldKey] = val.split("::");
+                                handleFieldChange(field.key, {
+                                  sourceStepId: stepId,
+                                  fieldKey,
+                                });
+                              }}
+                            >
+                              <SelectTrigger className="w-10">⚙️</SelectTrigger>
+                              <SelectContent>
+                                {previousSteps.map((s, index) =>
+                                  Object.entries(s.testOutput || {}).map(
+                                    ([key, value]) => (
+                                      <SelectItem
+                                        key={`${s.id}-${key}`}
+                                        value={`${s.id}::${key}`}
+                                      >
+                                        {`Step ${index + 1}.${key}: ${value}`}
+                                      </SelectItem>
+                                    )
+                                  )
+                                )}
+                              </SelectContent>
+                            </Select>
+                          )}
+
+                          {/* Remove Mapping Button */}
+                          {isMapped && (
+                            <Button
+                              size="icon"
+                              variant="ghost"
+                              onClick={() => handleFieldChange(field.key, "")}
+                            >
+                              ❌
+                            </Button>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </TabsContent>
 
@@ -204,7 +296,16 @@ const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
             </Tabs>
           )}
 
-          <Button variant="outline" className="w-full">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={() =>
+              onUpdate({
+                ...step,
+                testOutput: selectedEvent?.sampleOutput || {},
+              })
+            }
+          >
             Run Test
           </Button>
         </CardContent>
