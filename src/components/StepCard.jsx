@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import appsDB from "../lib/database.json";
 
 const StepCard = ({ step, isFirstStep, onDelete, onUpdate }) => {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [selectedTab, setSelectedTab] = useState("input");
   const [editingName, setEditingName] = useState(false);
 

@@ -2,8 +2,8 @@ DONE - Set trigger to be undeletable
 DONE - Apps Data shifting on Deleting
 DONE - Should not be able to delete trigger
 DONE - Save data in local json file
-- Step Name Changing and Manual Rename
-- Step Icon Setup and Changing
+DONE - Step Name Changing and Manual Rename
+DONE - Step Icon Setup and Changing
 - Ability to Drag steps and Change Order
 - Background scrolling
 - Zooming Canvas In and Out
