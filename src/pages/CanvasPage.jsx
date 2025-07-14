@@ -1,5 +1,5 @@
 // src/pages/CanvasPage.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import StepCard from "@/components/StepCard";
 import { Button } from "@/components/ui/button";
 import { v4 as uuidv4 } from "uuid";
@@ -23,6 +23,11 @@ import SortableStepWrapper from "@/components/SortableStepWrapper";
 const API_URL = "http://localhost:5001/api/workflow";
 
 const CanvasPage = () => {
+  // * Automatic Loading canvas
+  useEffect(() => {
+    handleLoad();
+  }, []);
+
   const [steps, setSteps] = useState([]);
   // * Zooming canvas in and out using + and -
   const [zoomLevel, setZoomLevel] = useState(1);
@@ -55,9 +60,15 @@ const CanvasPage = () => {
   const handleLoad = async () => {
     try {
       const res = await axios.get(API_URL);
-      setSteps(res.data);
+      const loaded = res.data;
+      if (Array.isArray(loaded) && loaded.length > 0) {
+        setSteps(loaded);
+      } else {
+        setSteps([]); // fallback to empty
+      }
     } catch (err) {
-      console.error("Error loading workflow:", err);
+      console.error("Failed to load workflow. Starting blank:", err);
+      setSteps([]);
     }
   };
 

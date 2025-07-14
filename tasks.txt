@@ -8,6 +8,6 @@ DONE - Ability to Drag steps and Change Order
 NO - Background scrolling
 DONE - Zooming Canvas In and Out
 DONE - Test Step Data
-- Ability to Map Fields
+DONE - Ability to Map Fields
 - Remove dependant fields when reordering steps
 - Add Paths
