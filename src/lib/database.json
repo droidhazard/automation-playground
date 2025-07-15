@@ -1,5 +1,100 @@
 [
   {
+    "id": "google_forms",
+    "name": "Google Forms",
+    "icon": "https://zapier-images.imgix.net/storage/developer_cli/82ee79efa898e62c2c8b71187e09fb91.png?auto=format&fit=crop&ixlib=react-9.10.0&q=50&w=60&h=60&dpr=2",
+    "triggers": [
+      {
+        "id": "new_form_response",
+        "name": "New Form Response",
+        "description": "Triggers when a new form response is received.",
+        "sampleOutput": {
+          "Response Id": "ACYDBNi7vbKQDshSG2-0Q7irqwSUfyYfnmN5r6KzE4_3UEs140ysnOIovDD91iI4S6oaF7c",
+          "Create Time": "2025-07-15T15:08:36.874Z",
+          "Last Submitted Time": "2025-07-15T15:08:36.874887Z",
+          "Respondent Email": "droidgamezzo@gmail.com",
+          "ID": "ACYDBNi7vbKQDshSG2-0Q7irqwSUfyYfnmN5r6KzE4_3UEs140ysnOIovDD91iI4S6oaF7c",
+          "Message": "a test submission.",
+          "Email": "user@test.com",
+          "Phone": "+12015550132",
+          "Full Name": "John Doe",
+          "Address": "1024 example st,",
+          "Price": "120"
+        },
+        "outputFields": []
+      }
+    ],
+    "actions": []
+  },
+  {
+    "id": "gmail",
+    "name": "Gmail",
+    "icon": "https://zapier-images.imgix.net/storage/services/1afcb319c029ec5da10efb593b7159c8.png?auto=format&fit=crop&ixlib=react-9.10.0&q=50&w=60&h=60&dpr=2",
+    "triggers": [
+      {
+        "id": "new_attachment",
+        "name": "New Attachment",
+        "description": "Triggers when you receive a new attachment.",
+        "sampleOutput": {
+          "ID": "1980da6b896a642f:icon.png",
+          "Message Id": "1980da6b896a642f",
+          "Thread Id": "1980da6b896a642f",
+          "Message Url": "https://mail.google.com/mail/u/0/#inbox/1980da6b896a642f",
+          "To Emails": "droidgamezzo@gmail.com",
+          "From Email": "mailer-daemon@googlemail.com",
+          "Subject": "Delivery Status Notification (Failure)",
+          "Body Html": "<html><head><style>* {font-family:Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;}</style></head><body><table cellpadding='0' cellspacing='0' class='email-wrapper' style='padding-top:32px;background-color:#ffffff'><tbody><tr><td><table cellpadding=0 cellspacing=0><tbody><tr><td style='max-width:560px;padding:24px 24px 32px;background-color:#fafafa;border:1px solid #e0e0e0;border-radius:2px'><img style='padding:0 24px 16px 0;float:left' width=72 height=72 alt='Error Icon' src='cid:icon.png'><table style='min-width:272px;padding-top:8px'><tbody><tr><td><h2 style='font-size:20px;color:#212121;font-weight:bold;margin:0'>Address not found</h2></td></tr><tr><td style='padding-top:20px;color:#757575;font-size:16px;font-weight:normal;text-align:left'>Your message wasn't delivered to <a style='color:#212121;text-decoration:none'><b>test@gmail.com</b></a> because the addresscouldn't be found, or is unable to receive mail.</td></tr><tr><td style='padding-top:24px;color:#4285F4;font-size:14px;font-weight:bold;text-align:left'><a style='text-decoration:none' href='https://support.google.com/mail/?p=NoSuchUser'>LEARN MORE</a></td></tr></tbody></table></td></tr></tbody></table></td></tr><tr style='border:none;background-color:#fff;font-size:12.8px;width:90%'><td align='left' style='padding:48px 10px'>The response was:<br/><p style='font-family:monospace'>550 5.1.1 The email account that you tried to reach does not exist. Please try double-checking the recipient's email address for typos or unnecessary spaces. For more information, go to https://support.google.com/mail/p=NoSuchUser38308e7fff4ca-32fab922148sor12592901fa.14 - gsmtp</p></td></tr></tbody></table></body></html>",
+          "Body Plain": "** Address not found ** Your message wasn't delivered to test@gmail.com because the address couldn't be found, or is unable to receive mail. Learn more here: https://support.google.com/mail/?p=NoSuchUser The response was: 550 5.1.1 The email account that you tried to reach does not exist. Please try double-checking the recipient's email address for typos or unnecessary spaces. For more information, go to https://support.google.com/mail/?p=NoSuchUser 38308e7fff4ca-32fab922148sor12592901fa.14 - gsmtp",
+          "Date": "Tue, 15 Jul 2025 02:42:35 -0700 (PDT)",
+          "Attachment": "https://zapier-dev-files.s3.amazonaws.com/cli-platform/20284/3BhKqn7UG5btGXiIBKEHy84UkOFP-qzxXjdPnVPp_UILrAR5PF9o9oXJy0ukaktzfePsOtzCsCbsfDnVY5SmS9Co5nZWbqiYH2oQtwfVhTssCYG5VuL9rRZGfKJzkomEblzbifIVpTxfq-RZEEC_u0mhar1LTwfUGkmvB56BnSw"
+        },
+        "outputFields": []
+      }
+    ],
+    "actions": [
+      {
+        "id": "create_deal",
+        "name": "Create Deal",
+        "description": "Creates a new deal in HubSpot.",
+        "inputFields": [
+          {
+            "key": "dealName",
+            "label": "Deal Name",
+            "type": "string",
+            "required": true
+          },
+          {
+            "key": "amount",
+            "label": "Amount",
+            "type": "number",
+            "required": false
+          },
+          {
+            "key": "pipeline",
+            "label": "Pipeline ID",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "sampleInput": {
+          "dealName": "New Website Project",
+          "amount": 3000,
+          "pipeline": "default"
+        },
+        "sampleOutput": {
+          "id": "98765",
+          "status": "created",
+          "dealName": "New Website Project"
+        },
+        "outputFields": [
+          { "key": "id", "label": "Deal ID", "type": "string" },
+          { "key": "status", "label": "Status", "type": "string" },
+          { "key": "dealName", "label": "Deal Name", "type": "string" }
+        ]
+      }
+    ]
+  },
+  {
     "id": "hubspot",
     "name": "HubSpot",
     "icon": "https://zapier-images.imgix.net/storage/developer/cde9764aa8d19fdd6d591455dbe5a78d.png?auto=format&fit=crop&ixlib=react-9.10.0&q=50&w=60&h=60&dpr=1",
@@ -132,6 +227,31 @@
           { "key": "name", "label": "Name", "type": "string" },
           { "key": "email", "label": "Email", "type": "email" }
         ]
+      }
+    ]
+  },
+  {
+    "id": "paths",
+    "name": "Paths",
+    "icon": "https://zapier-images.imgix.net/storage/services/b19117604393526d300c8a75f47f9cad.png?auto=format&fit=crop&ixlib=react-9.10.0&q=50&w=60&h=60&dpr=2",
+    "actions": [
+      {
+        "id": "custom_path",
+        "name": "Custom Path",
+        "description": "Use this path depending on a condition.",
+        "inputFields": [
+          {
+            "key": "name",
+            "label": "Full Name",
+            "type": "string",
+            "required": true
+          }
+        ],
+        "sampleInput": {
+          "name": "John Smith",
+          "email": "john@example.com",
+          "phone": "+123456789"
+        }
       }
     ]
   }
